@@ -4,7 +4,7 @@ pipeline {
     tools {
         maven 'maven'
         jdk 'jdk17'
-    }
+    }`
     environment {
         BACKEND_IMAGE = "rent-it-backend"
         FRONTEND_IMAGE = "car-rental-frontend"
@@ -57,7 +57,7 @@ pipeline {
     }
 
     post {
-        success {
+        success {    
             echo "✅ CI/CD Pipeline completed successfully!"
         }
         failure {
