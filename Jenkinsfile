@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'maven'
+        jdk 'jdk17'
+    }
     environment {
         BACKEND_IMAGE = "rent-it-backend"
         FRONTEND_IMAGE = "car-rental-frontend"
