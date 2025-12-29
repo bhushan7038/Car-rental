@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        MAVEN_OPTS = "-Xmx1024m"
+        MAVEN_OPTS = "-Xmx512m"
     }
 
     tools {
