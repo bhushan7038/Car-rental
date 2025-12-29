@@ -18,7 +18,8 @@ pipeline {
         stage('Build Spring Boot Backend') {
             steps {
                 dir('Rent_it_spring') {
-                    sh 'mvn clean package -DskipTests'
+               sh 'mvn clean package -DskipTests -Dmaven.javadoc.skip=true'
+
                 }
             }
         }
