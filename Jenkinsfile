@@ -6,6 +6,10 @@ pipeline {
         jdk 'jdk17'
     }
 
+    environment {
+        MAVEN_OPTS = "-Xmx1024m"
+    }
+
     stages {
 
         stage('Checkout Code') {
@@ -18,8 +22,7 @@ pipeline {
         stage('Build Spring Boot Backend') {
             steps {
                 dir('Rent_it_spring') {
-               sh 'mvn clean package -DskipTests -Dmaven.javadoc.skip=true'
-
+                    sh "mvn clean package -DskipTests -Dmaven.javadoc.skip=true"
                 }
             }
         }
@@ -27,7 +30,7 @@ pipeline {
         stage('Build Backend Docker Image') {
             steps {
                 dir('Rent_it_spring') {
-                    sh 'docker build -t rent-it-backend .'
+                    sh "docker build -t rent-it-backend ."
                 }
             }
         }
@@ -35,7 +38,7 @@ pipeline {
         stage('Build Frontend Docker Image') {
             steps {
                 dir('Car_Rental_Frontend') {
-                    sh 'docker build -t car-rental-frontend .'
+                    sh "docker build -t car-rental-frontend ."
                 }
             }
         }
@@ -50,4 +53,3 @@ pipeline {
         }
     }
 }
-
