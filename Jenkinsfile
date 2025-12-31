@@ -41,6 +41,22 @@ pipeline {
                 }
             }
         }
+        stage('Docker Build & Push') {
+    steps {
+        withCredentials([usernamePassword(
+            credentialsId: 'dockerhub-creds',
+            usernameVariable: 'DOCKER_USER',
+            passwordVariable: 'DOCKER_PASS'
+        )]) {
+            sh '''
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker build -t bhushan1044/spring-backend:1.0 .
+            docker push bhushan1044/spring-backend:1.0
+            '''
+        }
+    }
+}
+
 
         stage('Quality Gate') {
             steps {
