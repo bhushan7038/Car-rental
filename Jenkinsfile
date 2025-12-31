@@ -25,7 +25,7 @@
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube-2401044') {
+              withSonarQubeEnv('SonarQube-2401044') {
                     dir('Rent_it_spring') {
                         sh '''
                         mvn sonar:sonar \
