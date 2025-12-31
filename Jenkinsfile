@@ -28,7 +28,7 @@
         withSonarQubeEnv('SonarQube-2401044') {
             dir('Rent_it_spring') {
                 sh """
-                mvn sonar:sonar \
+         
                 -Dsonar.projectKey=car-rental \
                 -Dsonar.projectName=car-rental
                 """
