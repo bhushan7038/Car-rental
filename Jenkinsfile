@@ -24,23 +24,22 @@ pipeline {
 
         // SonarQube Analysis (fixed)
         stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('SonarQube-2401044') {
-                    dir('Rent_it_spring') {
-                        script {
-                            def scannerHome = tool 'SonarScanner'
-                            sh """
-                            ${scannerHome}/bin/sonar-scanner \
-                            -Dsonar.projectKey=car-rental \
-                            -Dsonar.projectName=car-rental \
-                            -Dsonar.sources=src \
-                            -Dsonar.java.binaries=target
-                            """
-                        }
-                    }
-                }
+    steps {
+        withSonarQubeEnv('SonarQube-2401044') {
+            dir('Rent_it_spring') {
+                sh """
+                sonar-scanner \
+                -Dsonar.projectKey=car-rental \
+                -Dsonar.projectName=car-rental \
+                -Dsonar.sources=src \
+                -Dsonar.java.binaries=target \
+                -Dsonar.login=${SONAR_AUTH_TOKEN}
+                """
             }
         }
+    }
+}
+
         stage('Docker Build & Push') {
     steps {
         withCredentials([usernamePassword(
