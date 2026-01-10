@@ -28,7 +28,7 @@ pipeline {
                 withSonarQubeEnv('SonarQube-2401044') {
                     dir('Rent_it_spring') {
                         sh '''
-                        /var/jenkins_home/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarScanner/bin/sonar-scanner \
+                        sonar-scanner \
                         -Dsonar.projectKey=car-rental \
                         -Dsonar.projectName=car-rental \
                         -Dsonar.sources=src \
