@@ -1,6 +1,3 @@
-environment {
-    SONAR_AUTH_TOKEN = credentials('sonarqube-token-2401044')
-}
 pipeline {
     agent any
 
@@ -10,6 +7,7 @@ pipeline {
     }
 
     stages {
+
         stage('Checkout Code') {
             steps {
                 git branch: 'master',
@@ -25,45 +23,42 @@ pipeline {
             }
         }
 
-        // SonarQube Analysis (fixed)
         stage('SonarQube Analysis') {
-    steps {
-        withSonarQubeEnv('SonarQube-2401044') {
-            dir('Rent_it_spring') {
-                sh """
-                sonar-scanner \
-                -Dsonar.projectKey=car-rental \
-                -Dsonar.projectName=car-rental \
-                -Dsonar.sources=src \
-                -Dsonar.java.binaries=target \
-                -Dsonar.login=${SONAR_AUTH_TOKEN}
-                """
+            steps {
+                withSonarQubeEnv('SonarQube-2401044') {
+                    dir('Rent_it_spring') {
+                        sh '''
+                        sonar-scanner \
+                        -Dsonar.projectKey=car-rental \
+                        -Dsonar.projectName=car-rental \
+                        -Dsonar.sources=src \
+                        -Dsonar.java.binaries=target
+                        '''
+                    }
+                }
             }
         }
-    }
-}
-
-        stage('Docker Build & Push') {
-    steps {
-        withCredentials([usernamePassword(
-            credentialsId: 'dockerhub-creds',
-            usernameVariable: 'DOCKER_USER',
-            passwordVariable: 'DOCKER_PASS'
-        )]) {
-            sh '''
-            docker login -u $DOCKER_USER -p $DOCKER_PASS
-            docker build -t bhushan1044/spring-backend:1.0 .
-            docker push bhushan1044/spring-backend:1.0
-            '''
-        }
-    }
-}
-
 
         stage('Quality Gate') {
             steps {
                 timeout(time: 5, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+
+        stage('Docker Build & Push') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-creds',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh '''
+                    docker login -u $DOCKER_USER -p $DOCKER_PASS
+                    docker build -t bhushan1044/spring-backend:1.0 .
+                    docker push bhushan1044/spring-backend:1.0
+                    '''
                 }
             }
         }
