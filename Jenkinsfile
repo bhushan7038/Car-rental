@@ -1,3 +1,7 @@
+environment {
+    SONAR_AUTH_TOKEN = credentials('sonarqube-token-2401044')
+}
+
 pipeline {
     agent any
 
