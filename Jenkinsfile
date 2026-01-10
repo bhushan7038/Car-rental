@@ -4,6 +4,7 @@ pipeline {
     tools {
         maven 'maven'
         jdk 'jdk17'
+        sonarScanner 'SonarScanner-4.8'
     }
 
     stages {
